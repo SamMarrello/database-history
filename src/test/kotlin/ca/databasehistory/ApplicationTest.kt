@@ -1,5 +1,6 @@
 package ca.databasehistory
 
+import ca.databasehistory.persistence.createConnection
 import io.ktor.server.routing.*
 import io.ktor.http.*
 import io.ktor.server.locations.*
@@ -23,6 +24,8 @@ import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import ca.databasehistory.plugins.*
+import com.mongodb.client.MongoDatabase
+import kotlin.reflect.typeOf
 
 class ApplicationTest {
     @Test
@@ -33,6 +36,13 @@ class ApplicationTest {
         client.get("/").apply {
             assertEquals(HttpStatusCode.OK, status)
             assertEquals("Hello World!", bodyAsText())
+        }
+    }
+    @Test
+    fun testDBConnection() = testApplication {
+        application {
+            val result = createConnection()
+            assert(result == typeOf<MongoDatabase>())
         }
     }
 }
