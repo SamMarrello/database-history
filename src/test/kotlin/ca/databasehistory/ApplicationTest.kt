@@ -1,6 +1,8 @@
 package ca.databasehistory
 
 import ca.databasehistory.persistence.createConnection
+import ca.databasehistory.persistence.getAllHistories
+import ca.databasehistory.persistence.getSpecificHistory
 import io.ktor.server.routing.*
 import io.ktor.http.*
 import io.ktor.server.locations.*
@@ -24,7 +26,9 @@ import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import ca.databasehistory.plugins.*
+import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
+import org.bson.Document
 import kotlin.reflect.typeOf
 
 class ApplicationTest {
@@ -43,6 +47,23 @@ class ApplicationTest {
         application {
             val result = createConnection()
             assert(result == typeOf<MongoDatabase>())
+        }
+    }
+    @Test
+    fun testRepo() = testApplication {
+        application {
+            val db = createConnection()
+            val result = getAllHistories(db)
+            assert(result == typeOf<MongoCollection<Document>>())
+        }
+        application {
+            val db = createConnection()
+            val arr = IntArray(10) { i -> (i + 1) }
+
+            for (item in arr) {
+                val result = getSpecificHistory(db, item)
+                assert(result == typeOf<Document>())
+            }
         }
     }
 }
