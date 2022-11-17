@@ -12,5 +12,5 @@ fun getAllHistories(database: MongoDatabase): MongoCollection<Document> {
 
 fun getSpecificHistory(database: MongoDatabase, id: Int): Document {
 
-    return database.getCollection("History").find(id)
+    return TODO()//database.getCollection("History").find()
 }
