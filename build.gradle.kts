@@ -40,4 +40,5 @@ dependencies {
     implementation("org.mongodb:mongo-java-driver:3.12.11")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 }

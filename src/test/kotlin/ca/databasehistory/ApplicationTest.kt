@@ -3,6 +3,7 @@ package ca.databasehistory
 import ca.databasehistory.persistence.createConnection
 import ca.databasehistory.persistence.getAllHistories
 import ca.databasehistory.persistence.getSpecificHistory
+import ca.databasehistory.persistence.getYear
 import io.ktor.server.routing.*
 import io.ktor.http.*
 import io.ktor.server.locations.*
@@ -28,7 +29,9 @@ import io.ktor.server.testing.*
 import ca.databasehistory.plugins.*
 import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
+import kotlinx.datetime.Clock
 import org.bson.Document
+import java.time.Instant
 import kotlin.reflect.typeOf
 
 class ApplicationTest {
@@ -54,7 +57,7 @@ class ApplicationTest {
         application {
             val db = createConnection()
             val result = getAllHistories(db)
-            assert(result == typeOf<MongoCollection<Document>>())
+            assert(result == typeOf<MongoCollection<Document>>() || result == typeOf<Boolean>())
         }
         application {
             val db = createConnection()
@@ -62,8 +65,15 @@ class ApplicationTest {
 
             for (item in arr) {
                 val result = getSpecificHistory(db, item)
-                assert(result == typeOf<Document>())
+                assert(result == typeOf<Document>() || result == typeOf<Boolean>())
             }
+        }
+        application {
+            val db = createConnection()
+            val time: kotlinx.datetime.Instant = Clock.System.now()
+            val result = getYear(db, time)
+
+            assert(result == typeOf<MongoCollection<Document>>() || result == typeOf<Boolean>())
         }
     }
 }

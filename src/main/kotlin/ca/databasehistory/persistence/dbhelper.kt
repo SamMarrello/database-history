@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase
 
 fun createConnection(): MongoDatabase {
 
-    val password: String = System.getenv("password")
+    val password = System.getenv("password")
     val uri = ConnectionString("mongodb+srv://SamMarrello:<$password>@databasehistory.8gluluc." +
             "mongodb.net/?retryWrites=true&w=majority")
 
